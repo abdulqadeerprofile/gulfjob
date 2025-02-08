@@ -1,101 +1,138 @@
-import Image from "next/image";
+// app/page.tsx
+'use client'; // Mark as client component
+
+import { useState } from 'react';
+import { JobCard } from '@/components/JobCard';
+import { Pagination } from '@/components/Pagination';
+import HeroSection from '@/components/HeroSection';
+
+// Dummy data for job cards with images
+const jobs = [
+  {
+    id: '1',
+    title: 'Senior Software Engineer',
+    company: 'Tech Corp',
+    location: 'Dubai, UAE',
+    salary: '$8,000 - $12,000',
+    type: 'Full-time',
+    category: 'Technology',
+    posted: '2d ago',
+    image: '/images/tech-corp.jpg', // Add image path
+  },
+  {
+    id: '2',
+    title: 'Marketing Manager',
+    company: 'Gulf Media',
+    location: 'Abu Dhabi, UAE',
+    salary: '$6,000 - $9,000',
+    type: 'Full-time',
+    category: 'Marketing',
+    posted: '3d ago',
+    image: '/images/gulf-media.jpg', // Add image path
+  },
+  {
+    id: '3',
+    title: 'Civil Engineer',
+    company: 'Construction Plus',
+    location: 'Riyadh, Saudi Arabia',
+    salary: '$5,000 - $7,500',
+    type: 'Full-time',
+    category: 'Engineering',
+    posted: '1d ago',
+    image: '/images/construction-plus.jpg', // Add image path
+  },
+  {
+    id: '4',
+    title: 'Financial Analyst',
+    company: 'Gulf Bank',
+    location: 'Doha, Qatar',
+    salary: '$7,000 - $10,000',
+    type: 'Full-time',
+    category: 'Finance',
+    posted: '4d ago',
+    image: '/images/gulf-bank.jpg', // Add image path
+  },
+  {
+    id: '5',
+    title: 'Nurse Practitioner',
+    company: 'MedCare Hospital',
+    location: 'Dubai, UAE',
+    salary: '$4,500 - $6,500',
+    type: 'Full-time',
+    category: 'Healthcare',
+    posted: '5d ago',
+    image: '/images/medcare-hospital.jpg', // Add image path
+  },
+  {
+    id: '6',
+    title: 'Graphic Designer',
+    company: 'Creative Studio',
+    location: 'Manama, Bahrain',
+    salary: '$3,500 - $5,000',
+    type: 'Part-time',
+    category: 'Design',
+    posted: '6d ago',
+    image: '/images/creative-studio.jpg', // Add image path
+  },
+  {
+    id: '7',
+    title: 'Sales Executive',
+    company: 'Gulf Enterprises',
+    location: 'Kuwait City, Kuwait',
+    salary: '$4,000 - $6,000',
+    type: 'Full-time',
+    category: 'Sales',
+    posted: '7d ago',
+    image: '/images/gulf-enterprises.jpg', // Add image path
+  },
+  {
+    id: '8',
+    title: 'HR Manager',
+    company: 'Talent Solutions',
+    location: 'Muscat, Oman',
+    salary: '$6,500 - $9,500',
+    type: 'Full-time',
+    category: 'Human Resources',
+    posted: '8d ago',
+    image: '/images/talent-solutions.jpg', // Add image path
+  },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Pagination logic
+  const paginatedJobs = jobs.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  return (
+    <div>
+      {/* Hero Section */}
+      <HeroSection />
+
+      {/* Job Listings Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-8">
+          Latest Job Opportunities
+        </h2>
+
+        {/* Job Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {paginatedJobs.map((job) => (
+            <JobCard key={job.id} {...job} />
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Pagination */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(jobs.length / itemsPerPage)}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      </div>
     </div>
   );
 }
