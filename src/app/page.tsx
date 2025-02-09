@@ -1,138 +1,160 @@
-// app/page.tsx
-'use client'; // Mark as client component
+'use client';
 
-import { useState } from 'react';
-import { JobCard } from '@/components/JobCard';
-import { Pagination } from '@/components/Pagination';
+import { useState, useEffect } from 'react';
+import { createClient } from '@sanity/client';
+import imageUrlBuilder from '@sanity/image-url';
 import HeroSection from '@/components/HeroSection';
+import Head from 'next/head';
+import { JobCard } from '@/components/JobCard';
 
-// Dummy data for job cards with images
-const jobs = [
-  {
-    id: '1',
-    title: 'Senior Software Engineer',
-    company: 'Tech Corp',
-    location: 'Dubai, UAE',
-    salary: '$8,000 - $12,000',
-    type: 'Full-time',
-    category: 'Technology',
-    posted: '2d ago',
-    image: '/images/tech-corp.jpg', // Add image path
-  },
-  {
-    id: '2',
-    title: 'Marketing Manager',
-    company: 'Gulf Media',
-    location: 'Abu Dhabi, UAE',
-    salary: '$6,000 - $9,000',
-    type: 'Full-time',
-    category: 'Marketing',
-    posted: '3d ago',
-    image: '/images/gulf-media.jpg', // Add image path
-  },
-  {
-    id: '3',
-    title: 'Civil Engineer',
-    company: 'Construction Plus',
-    location: 'Riyadh, Saudi Arabia',
-    salary: '$5,000 - $7,500',
-    type: 'Full-time',
-    category: 'Engineering',
-    posted: '1d ago',
-    image: '/images/construction-plus.jpg', // Add image path
-  },
-  {
-    id: '4',
-    title: 'Financial Analyst',
-    company: 'Gulf Bank',
-    location: 'Doha, Qatar',
-    salary: '$7,000 - $10,000',
-    type: 'Full-time',
-    category: 'Finance',
-    posted: '4d ago',
-    image: '/images/gulf-bank.jpg', // Add image path
-  },
-  {
-    id: '5',
-    title: 'Nurse Practitioner',
-    company: 'MedCare Hospital',
-    location: 'Dubai, UAE',
-    salary: '$4,500 - $6,500',
-    type: 'Full-time',
-    category: 'Healthcare',
-    posted: '5d ago',
-    image: '/images/medcare-hospital.jpg', // Add image path
-  },
-  {
-    id: '6',
-    title: 'Graphic Designer',
-    company: 'Creative Studio',
-    location: 'Manama, Bahrain',
-    salary: '$3,500 - $5,000',
-    type: 'Part-time',
-    category: 'Design',
-    posted: '6d ago',
-    image: '/images/creative-studio.jpg', // Add image path
-  },
-  {
-    id: '7',
-    title: 'Sales Executive',
-    company: 'Gulf Enterprises',
-    location: 'Kuwait City, Kuwait',
-    salary: '$4,000 - $6,000',
-    type: 'Full-time',
-    category: 'Sales',
-    posted: '7d ago',
-    image: '/images/gulf-enterprises.jpg', // Add image path
-  },
-  {
-    id: '8',
-    title: 'HR Manager',
-    company: 'Talent Solutions',
-    location: 'Muscat, Oman',
-    salary: '$6,500 - $9,500',
-    type: 'Full-time',
-    category: 'Human Resources',
-    posted: '8d ago',
-    image: '/images/talent-solutions.jpg', // Add image path
-  },
-];
+// Define interfaces
+interface JobPost {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  salary: string;
+  type: string;
+  category: string;
+  posted: string;
+  image: string;
+  description: string;
+  slug: string;
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    keywords: string[];
+  };
+}
+
+interface PageMetadata {
+  title: string;
+  description: string;
+  keywords: string;
+}
+
+// Sanity Client Setup
+const sanityClient = createClient({
+  projectId: '5g7hrg0s',
+  dataset: 'production',
+  apiVersion: '2023-01-01',
+  useCdn: true,
+});
+
+const builder = imageUrlBuilder(sanityClient);
+
+function urlFor(source: any) {
+  return builder.image(source).url();
+}
 
 export default function Home() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const [jobs, setJobs] = useState<JobPost[]>([]);
+  const [pageMetadata, setPageMetadata] = useState<PageMetadata>({
+    title: 'Latest Job Posts | Your Company',
+    description: 'Explore the latest job opportunities and career posts.',
+    keywords: 'jobs, career, opportunities',
+  });
 
-  // Pagination logic
-  const paginatedJobs = jobs.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  useEffect(() => {
+    async function fetchJobs() {
+      try {
+        const query = `*[_type == "post"] {
+          _id,
+          title,
+          slug,
+          excerpt,
+          seo {
+            metaTitle,
+            metaDescription,
+            keywords
+          },
+          mainImage {
+            asset-> {
+              _id,
+              url
+            },
+            alt
+          },
+          company,
+          location,
+          salary,
+          type,
+          category,
+          postedAt
+        }`;
+
+        const posts = await sanityClient.fetch(query);
+
+        const formattedJobs = posts.map((post: any) => ({
+          id: post._id,
+          title: post.title,
+          description: post.excerpt || post.seo?.metaDescription || 'No description available.',
+          image: post.mainImage?.asset?.url || 'https://via.placeholder.com/150',
+          slug: post.slug?.current,
+          company: post.company || 'Unknown Company',
+          location: post.location || 'Remote',
+          salary: post.salary || 'Not specified',
+          type: post.type || 'Full-time',
+          category: post.category || 'General',
+          posted: post.postedAt || 'Recently',
+          seo: {
+            metaTitle: post.seo?.metaTitle || post.title,
+            metaDescription: post.seo?.metaDescription || '',
+            keywords: post.seo?.keywords || [],
+          },
+        }));
+
+        setJobs(formattedJobs);
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+      }
+    }
+
+    fetchJobs();
+  }, []);
 
   return (
-    <div>
-      {/* Hero Section */}
-      <HeroSection />
+    <>
+      <Head>
+        <title>{pageMetadata.title}</title>
+        <meta name="description" content={pageMetadata.description} />
+        <meta name="keywords" content={pageMetadata.keywords} />
+        <meta property="og:title" content={pageMetadata.title} />
+        <meta property="og:description" content={pageMetadata.description} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageMetadata.title} />
+        <meta name="twitter:description" content={pageMetadata.description} />
+      </Head>
 
-      {/* Job Listings Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-8">
-          Latest Job Opportunities
-        </h2>
+      <div>
+        <HeroSection />
 
-        {/* Job Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {paginatedJobs.map((job) => (
-            <JobCard key={job.id} {...job} />
-          ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-8">
+            Latest Job Posts
+          </h1>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {jobs.map((job) => (
+              <JobCard
+                key={job.id}
+                id={job.id}
+                title={job.title}
+                company={job.company}
+                location={job.location}
+                salary={job.salary}
+                type={job.type}
+                category={job.category}
+                posted={job.posted}
+                image={job.image}
+                description={job.description}
+                href={`/jobs/${job.slug}`}
+              />
+            ))}
+          </div>
         </div>
-
-        {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(jobs.length / itemsPerPage)}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
       </div>
-    </div>
+    </>
   );
 }

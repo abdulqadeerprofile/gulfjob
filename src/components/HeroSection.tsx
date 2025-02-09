@@ -1,18 +1,41 @@
-'use client'; 
+'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function HeroSection() {
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [trail, setTrail] = useState<Array<{ x: number; y: number }>>([]);
+
+  // Update cursor position and trail
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursorPosition({ x: e.clientX, y: e.clientY });
+      setTrail((prev) => [{ x: e.clientX, y: e.clientY }, ...prev.slice(0, 20)]);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <section className="relative h-[600px] flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-800 overflow-hidden">
-      {/* Background Animation */}
-      <motion.div
-        className="absolute inset-0 bg-[url('/images/gulf-map.png')] bg-cover bg-center opacity-20"
-        initial={{ scale: 1.2 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
-      />
+      {/* Cursor Tail Animation */}
+      <div className="absolute inset-0 pointer-events-none">
+        {trail.map((pos, index) => (
+          <motion.div
+            key={index}
+            className="absolute w-4 h-4 bg-white/20 rounded-full"
+            style={{
+              left: pos.x - 8, // Center the dot
+              top: pos.y - 8, // Center the dot
+              scale: 1 - index / trail.length, // Gradually reduce size
+              opacity: 1 - index / trail.length, // Gradually fade out
+            }}
+          />
+        ))}
+      </div>
 
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4">

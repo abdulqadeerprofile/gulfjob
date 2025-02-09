@@ -1,4 +1,3 @@
-// components/JobCard.tsx
 'use client'; // Mark as client component
 
 import { motion } from 'framer-motion';
@@ -14,10 +13,12 @@ interface JobCardProps {
   type: string;
   category: string;
   posted: string;
-  image: string; // Add image prop
+  image: string;
+  description: string;
+  href: string;
 }
 
-export function JobCard({ id, title, company, location, salary, type, category, posted, image }: JobCardProps) {
+export function JobCard({ id, title, company, location, salary, type, category, posted, image, description, href }: JobCardProps) {
   return (
     <motion.div
       className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden"
@@ -44,6 +45,7 @@ export function JobCard({ id, title, company, location, salary, type, category, 
           <BuildingOffice2Icon className="w-5 h-5 mr-2" />
           <span>{company}</span>
         </div>
+        <p className="mt-2 text-gray-500 dark:text-gray-400 text-sm">{description}</p>
         <div className="flex flex-wrap gap-4 mt-4">
           <div className="flex items-center text-gray-600 dark:text-gray-400">
             <MapPinIcon className="w-5 h-5 mr-2" />
@@ -64,7 +66,7 @@ export function JobCard({ id, title, company, location, salary, type, category, 
       <div className="flex justify-between items-center p-6 border-t border-gray-100 dark:border-gray-700">
         <span className="text-sm text-gray-500 dark:text-gray-400">{posted}</span>
         <Link
-          href={`/jobs/${id}`}
+          href={href}
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors duration-200"
         >
           Apply Now
