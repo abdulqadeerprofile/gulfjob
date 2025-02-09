@@ -1,5 +1,5 @@
-import {DocumentTextIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import { DocumentTextIcon } from '@sanity/icons'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export const postType = defineType({
   name: 'post',
@@ -10,15 +10,22 @@ export const postType = defineType({
     defineField({
       name: 'title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().max(70).warning('Optimal length is 50-60 characters for SEO'),
     }),
     defineField({
       name: 'slug',
       type: 'slug',
       options: {
         source: 'title',
+        maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'company',
+      type: 'string',
+      title: 'Company Name',
+      description: 'Optional company name',
     }),
     defineField({
       name: 'seo',
@@ -29,21 +36,22 @@ export const postType = defineType({
           name: 'metaTitle',
           type: 'string',
           title: 'Meta Title',
-          description: 'Title used for search engines and browser tabs',
-          validation: (Rule) => Rule.max(60).warning('Should be under 60 characters'),
+          validation: (Rule) => 
+            Rule.max(60).warning('Recommended length: 50-60 characters'),
         }),
         defineField({
           name: 'metaDescription',
           type: 'text',
           title: 'Meta Description',
-          description: 'Description for search engines',
-          validation: (Rule) => Rule.max(160).warning('Should be under 160 characters'),
+          rows: 3,
+          validation: (Rule) => 
+            Rule.max(160).warning('Recommended length: 150-160 characters'),
         }),
         defineField({
           name: 'keywords',
           type: 'array',
           title: 'Keywords',
-          of: [{type: 'string'}],
+          of: [{ type: 'string' }],
           options: {
             layout: 'tags',
           },
@@ -51,22 +59,24 @@ export const postType = defineType({
       ],
     }),
     defineField({
-      name: 'author',
-      type: 'reference',
-      to: {type: 'author'},
-    }),
-    defineField({
       name: 'mainImage',
       type: 'image',
-      options: {
+      title: 'Featured Image',
+      options: { 
         hotspot: true,
+        metadata: ['lqip'],
       },
       fields: [
         defineField({
           name: 'alt',
           type: 'string',
-          title: 'Alternative text',
-          validation: (Rule) => Rule.required(),
+          title: 'Alternative Text',
+          validation: Rule => Rule.required().max(125),
+        }),
+        defineField({
+          name: 'caption',
+          type: 'string',
+          title: 'Caption',
         }),
       ],
     }),
@@ -74,27 +84,40 @@ export const postType = defineType({
       name: 'excerpt',
       type: 'text',
       title: 'Excerpt',
-      description: 'Brief summary for previews',
-      validation: (Rule) => Rule.max(200),
-    }),
-    defineField({
-      name: 'publishedAt',
-      type: 'datetime',
+      rows: 3,
+      validation: (Rule) => Rule.max(200).required(),
     }),
     defineField({
       name: 'body',
       type: 'blockContent',
+      title: 'Content',
+    }),
+    defineField({
+      name: 'publishedAt',
+      type: 'datetime',
+      title: 'Publish Date',
+      validation: Rule => Rule.required(),
+      initialValue: (new Date()).toISOString(),
+    }),
+    defineField({
+      name: 'updatedAt',
+      type: 'datetime',
+      title: 'Last Updated',
     }),
   ],
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
+      company: 'company',
       media: 'mainImage',
+      publishedAt: 'publishedAt',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const { company, publishedAt } = selection
+      return {
+        ...selection,
+        subtitle: `${company ? `Company: ${company} • ` : ''}${new Date(publishedAt).toLocaleDateString()}`
+      }
     },
   },
 })
