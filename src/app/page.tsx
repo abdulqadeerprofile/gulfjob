@@ -1,29 +1,31 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { createClient } from '@sanity/client'
-import { JobCard } from '@/components/JobCard'
-import Head from 'next/head'
-import HeroSection from '@/components/HeroSection' // Make sure this import path is correct
+import { useState, useEffect } from "react";
+import { createClient } from "@sanity/client";
+import { JobCard } from "@/components/JobCard";
+import Head from "next/head";
+import HeroSection from "@/components/HeroSection"; 
+import HeroSection2 from "@/components/HeroSection2";
+import HeroSection3 from "@/components/HeroSection3";
 
 interface JobPost {
-  id: string
-  title: string
-  company: string
-  description: string
-  image: string
-  slug: string
+  id: string;
+  title: string;
+  company: string;
+  description: string;
+  image: string;
+  slug: string;
 }
 
 const sanityClient = createClient({
-  projectId: '5g7hrg0s',
-  dataset: 'production',
-  apiVersion: '2023-01-01',
+  projectId: "5g7hrg0s",
+  dataset: "production",
+  apiVersion: "2023-01-01",
   useCdn: true,
-})
+});
 
 export default function Home() {
-  const [jobs, setJobs] = useState<JobPost[]>([])
+  const [jobs, setJobs] = useState<JobPost[]>([]);
 
   useEffect(() => {
     async function fetchJobs() {
@@ -37,33 +39,37 @@ export default function Home() {
           mainImage {
             asset->{url}
           }
-        }`
+        }`;
 
-        const posts = await sanityClient.fetch(query)
+        const posts = await sanityClient.fetch(query);
 
         const formattedJobs = posts.map((post: any) => ({
           id: post._id,
           title: post.title,
-          company: post.company || '',
-          description: post.excerpt || 'No description available',
-          image: post.mainImage?.asset?.url || 'https://via.placeholder.com/150',
-          slug: post.slug?.current || ''
-        }))
+          company: post.company || "",
+          description: post.excerpt || "No description available",
+          image:
+            post.mainImage?.asset?.url || "https://via.placeholder.com/150",
+          slug: post.slug?.current || "",
+        }));
 
-        setJobs(formattedJobs)
+        setJobs(formattedJobs);
       } catch (error) {
-        console.error('Error fetching jobs:', error)
+        console.error("Error fetching jobs:", error);
       }
     }
 
-    fetchJobs()
-  }, [])
+    fetchJobs();
+  }, []);
 
   return (
     <>
       <Head>
         <title>Citibank UAE Careers | Latest Opportunities</title>
-        <meta name="description" content="Explore career opportunities at Citibank UAE" />
+        <meta
+          name="description"
+          content="Explore career opportunities at Citibank UAE"
+        />
       </Head>
 
       {/* Added Hero Section */}
@@ -87,7 +93,10 @@ export default function Home() {
             />
           ))}
         </div>
+        {/* Second Hero Section */}
+        <HeroSection2 />
+        <HeroSection3 />
       </div>
     </>
-  )
+  );
 }
