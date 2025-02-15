@@ -15,6 +15,27 @@ interface JobPost {
   description: string;
   image: string;
   slug: string;
+  location: string; // Added property
+  salary: string; // Added property
+  type: string; // Added property
+  category: string; // Added property
+}
+
+interface SanityPost {
+  _id: string;
+  title: string;
+  company: string;
+  excerpt: string;
+  slug: { current: string };
+  mainImage: {
+    asset: {
+      url: string;
+    };
+  };
+  location?: string;
+  salary?: string;
+  type?: string;
+  category?: string;
 }
 
 const sanityClient = createClient({
@@ -43,14 +64,17 @@ export default function Home() {
 
         const posts = await sanityClient.fetch(query);
 
-        const formattedJobs = posts.map((post: any) => ({
+        const formattedJobs = posts.map((post: SanityPost) => ({
           id: post._id,
           title: post.title,
           company: post.company || "",
           description: post.excerpt || "No description available",
-          image:
-            post.mainImage?.asset?.url || "https://via.placeholder.com/150",
+          image: post.mainImage?.asset?.url || "https://via.placeholder.com/150",
           slug: post.slug?.current || "",
+          location: post.location || "Unknown location",
+          salary: post.salary || "Not specified",
+          type: post.type || "Full-time",
+          category: post.category || "General",
         }));
 
         setJobs(formattedJobs);
@@ -83,14 +107,18 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {jobs.map((job) => (
             <JobCard
-              key={job.id}
-              id={job.id}
-              title={job.title}
-              company={job.company}
-              description={job.description}
-              image={job.image}
-              slug={job.slug}
-            />
+            key={job.id}
+            id={job.id}
+            title={job.title}
+            company={job.company}
+            description={job.description}
+            image={job.image}
+            slug={job.slug}
+            location={job.location}
+            salary={job.salary}
+            type={job.type}
+            category={job.category}
+          />
           ))}
         </div>
         {/* Second Hero Section */}

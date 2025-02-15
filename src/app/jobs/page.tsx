@@ -4,25 +4,74 @@ import { useState } from 'react';
 import { JobCard } from '@/components/JobCard';
 import { Pagination } from '@/components/Pagination';
 
-const categories = ['All', 'Engineering', 'Healthcare', 'Finance', 'Technology', 'Education'];
+const categories = ['All', 'Engineering', 'Healthcare', 'Finance', 'Technology', 'Education'] as const;
 
-const jobs = [
-  // Add 8 job objects here with proper data
+interface Job {
+  id: string;
+  title: string;
+  company: string;
+  description: string;
+  image: string;
+  slug: string;
+  location: string;
+  salary: string;
+  type: string;
+  category: string;
+}
+
+const jobs: Job[] = [
   {
     id: '1',
     title: 'Senior Software Engineer',
     company: 'Tech Corp',
+    description: 'Join our dynamic team of software engineers working on cutting-edge technologies.',
+    image: 'https://via.placeholder.com/150',
+    slug: 'senior-software-engineer',
     location: 'Dubai, UAE',
     salary: '$8,000 - $12,000',
     type: 'Full-time',
-    category: 'Technology',
-    posted: '2d ago'
+    category: 'Technology'
   },
-  // ... add 7 more job objects
+  {
+    id: '2',
+    title: 'Medical Doctor',
+    company: 'Healthcare Plus',
+    description: 'Experienced medical doctor needed for our expanding healthcare facility.',
+    image: 'https://via.placeholder.com/150',
+    slug: 'medical-doctor',
+    location: 'Abu Dhabi, UAE',
+    salary: '$15,000 - $20,000',
+    type: 'Full-time',
+    category: 'Healthcare'
+  },
+  {
+    id: '3',
+    title: 'Financial Analyst',
+    company: 'Global Finance',
+    description: 'Seeking a skilled financial analyst to join our investment team.',
+    image: 'https://via.placeholder.com/150',
+    slug: 'financial-analyst',
+    location: 'Dubai, UAE',
+    salary: '$6,000 - $9,000',
+    type: 'Full-time',
+    category: 'Finance'
+  },
+  {
+    id: '4',
+    title: 'University Professor',
+    company: 'International University',
+    description: 'Professor position available in our Computer Science department.',
+    image: 'https://via.placeholder.com/150',
+    slug: 'university-professor',
+    location: 'Sharjah, UAE',
+    salary: '$10,000 - $15,000',
+    type: 'Full-time',
+    category: 'Education'
+  }
 ];
 
 export default function JobsPage() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -60,17 +109,9 @@ export default function JobsPage() {
       {/* Job Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {paginatedJobs.map(job => (
-          <JobCard 
-            key={job.id} 
-            title={job.title} 
-            company={job.company} 
-            location={job.location} 
-            salary={job.salary} 
-            type={job.type} 
-            category={job.category} 
-            description={job.description} 
-            image={job.image} 
-            slug={job.slug} 
+          <JobCard
+            key={job.id}
+            {...job}
           />
         ))}
       </div>
@@ -79,6 +120,7 @@ export default function JobsPage() {
       <Pagination
         currentPage={currentPage}
         totalPages={Math.ceil(filteredJobs.length / itemsPerPage)}
+        onPageChange={setCurrentPage}
       />
     </div>
   );
