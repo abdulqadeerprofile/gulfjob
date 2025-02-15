@@ -1,6 +1,6 @@
 'use client';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 
 // Updated debounce function with proper typing for MouseEvent
 function debounce(func: (e: MouseEvent) => void, wait: number) {
@@ -14,9 +14,29 @@ function debounce(func: (e: MouseEvent) => void, wait: number) {
 export default function HeroSection3() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   
-  const rotateXBase = useTransform(y, [0, window.innerHeight], [15, -15]);
-  const rotateYBase = useTransform(x, [0, window.innerWidth], [-15, 15]);
+  useEffect(() => {
+    // Set initial dimensions
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+
+    // Handle resize
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const rotateXBase = useTransform(y, [0, dimensions.height], [15, -15]);
+  const rotateYBase = useTransform(x, [0, dimensions.width], [-15, 15]);
 
   const cardTransforms = [
     {
@@ -64,6 +84,11 @@ export default function HeroSection3() {
       stat: "4,000+"
     }
   ];
+
+  // Only render content when dimensions are set
+  if (dimensions.width === 0 || dimensions.height === 0) {
+    return null; // or a loading state
+  }
 
   return (
     <section className="relative py-16 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
