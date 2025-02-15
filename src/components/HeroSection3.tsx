@@ -1,25 +1,39 @@
 'use client';
-import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
-import { useEffect, useState, useCallback } from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useEffect, useCallback } from 'react';
 
-function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
+// Updated debounce function with proper typing for MouseEvent
+function debounce(func: (e: MouseEvent) => void, wait: number) {
   let timeout: NodeJS.Timeout;
-  return (...args: Parameters<T>) => {
+  return (e: MouseEvent) => {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
+    timeout = setTimeout(() => func(e), wait);
   };
 }
 
 export default function HeroSection3() {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
-  const rotateX = useTransform(y, [0, typeof window !== 'undefined' ? window.innerHeight : 0], [15, -15]);
-  const rotateY = useTransform(x, [0, typeof window !== 'undefined' ? window.innerWidth : 0], [-15, 15]);
+  const rotateXBase = useTransform(y, [0, window.innerHeight], [15, -15]);
+  const rotateYBase = useTransform(x, [0, window.innerWidth], [-15, 15]);
+
+  const cardTransforms = [
+    {
+      rotateX: useTransform(rotateXBase, val => val * 0.5),
+      rotateY: useTransform(rotateYBase, val => val * 0.5)
+    },
+    {
+      rotateX: useTransform(rotateXBase, val => val * 0.4),
+      rotateY: useTransform(rotateYBase, val => val * 0.4)
+    },
+    {
+      rotateX: useTransform(rotateXBase, val => val * 0.3),
+      rotateY: useTransform(rotateYBase, val => val * 0.3)
+    }
+  ];
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    setCursorPosition({ x: e.clientX, y: e.clientY });
     x.set(e.clientX);
     y.set(e.clientY);
   }, [x, y]);
@@ -71,8 +85,8 @@ export default function HeroSection3() {
               className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300"
               whileHover={{ scale: 1.05 }}
               style={{
-                rotateX: useTransform(rotateX, val => val * (0.5 - index * 0.1)),
-                rotateY: useTransform(rotateY, val => val * (0.5 - index * 0.1))
+                rotateX: cardTransforms[index].rotateX,
+                rotateY: cardTransforms[index].rotateY
               }}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -105,39 +119,10 @@ export default function HeroSection3() {
               >
                 {card.stat}
               </motion.div>
-
-              <div 
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: `radial-gradient(400px at ${cursorPosition.x}px ${cursorPosition.y}px, rgba(99, 102, 241, 0.1) 0%, transparent 80%)`
-                }}
-              />
             </motion.div>
           ))}
         </div>
       </div>
-
-      <AnimatePresence>
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-4 h-4 bg-blue-200 dark:bg-blue-900 rounded-full pointer-events-none"
-            style={{
-              left: cursorPosition.x - 8,
-              top: cursorPosition.y - 8,
-              scale: 1 - i * 0.2,
-              opacity: 1 - i * 0.3
-            }}
-            initial={{ opacity: 1 }}
-            animate={{ 
-              x: cursorPosition.x,
-              y: cursorPosition.y,
-              transition: { type: 'spring', mass: 0.1 }
-            }}
-            exit={{ opacity: 0 }}
-          />
-        ))}
-      </AnimatePresence>
     </section>
   );
 }

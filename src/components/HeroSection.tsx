@@ -1,17 +1,16 @@
 'use client';
 
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion'; // Removed unused imports
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function HeroSection() {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  // Removed unused cursorPosition state
   const [trail, setTrail] = useState<Array<{ x: number; y: number }>>([]);
 
-  // Update cursor position and trail
+  // Update cursor trail
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
       setTrail((prev) => [{ x: e.clientX, y: e.clientY }, ...prev.slice(0, 20)]);
     };
 
@@ -28,10 +27,10 @@ export default function HeroSection() {
             key={index}
             className="absolute w-4 h-4 bg-white/20 rounded-full"
             style={{
-              left: pos.x - 8, // Center the dot
-              top: pos.y - 8, // Center the dot
-              scale: 1 - index / trail.length, // Gradually reduce size
-              opacity: 1 - index / trail.length, // Gradually fade out
+              left: pos.x - 8,
+              top: pos.y - 8,
+              scale: 1 - index / trail.length,
+              opacity: 1 - index / trail.length,
             }}
           />
         ))}
@@ -54,7 +53,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
         >
-          Explore thousands of job opportunities in the Gulf region. Whether you're looking for government jobs, private sector roles, or internships, we've got you covered.
+          Explore thousands of job opportunities in the Gulf region. Whether you&apos;re looking for government jobs, private sector roles, or internships, we&apos;ve got you covered.
         </motion.p>
 
         <motion.div

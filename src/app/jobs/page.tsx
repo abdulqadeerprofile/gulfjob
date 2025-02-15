@@ -60,7 +60,18 @@ export default function JobsPage() {
       {/* Job Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {paginatedJobs.map(job => (
-          <JobCard key={job.id} {...job} />
+          <JobCard 
+            key={job.id} 
+            title={job.title} 
+            company={job.company} 
+            location={job.location} 
+            salary={job.salary} 
+            type={job.type} 
+            category={job.category} 
+            description={job.description} 
+            image={job.image} 
+            slug={job.slug} 
+          />
         ))}
       </div>
 
