@@ -7,6 +7,9 @@ import Head from "next/head";
 import HeroSection from "@/components/HeroSection"; 
 import HeroSection2 from "@/components/HeroSection2";
 import HeroSection3 from "@/components/HeroSection3";
+import { JobListCard } from "@/components/JobListCard";
+import { Sidebar } from "@/components/Sidebar";
+
 
 interface JobPost {
   id: string;
@@ -47,6 +50,8 @@ const sanityClient = createClient({
 
 export default function Home() {
   const [jobs, setJobs] = useState<JobPost[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 7;
 
   useEffect(() => {
     async function fetchJobs() {
@@ -86,6 +91,11 @@ export default function Home() {
     fetchJobs();
   }, []);
 
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(jobs.length / jobsPerPage);
+
   return (
     <>
       <Head>
@@ -96,35 +106,59 @@ export default function Home() {
         />
       </Head>
 
-      {/* Added Hero Section */}
       <HeroSection />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-8">
-          Latest Career Opportunities
-        </h1>
+        <div className="flex gap-8">
+          {/* Main Content */}
+          <div className="w-2/3">
+            <h1 className="text-4xl font-bold text-gray-800 mb-8">
+              Latest Career Opportunities
+            </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {jobs.map((job) => (
-            <JobCard
-            key={job.id}
-            id={job.id}
-            title={job.title}
-            company={job.company}
-            description={job.description}
-            image={job.image}
-            slug={job.slug}
-            location={job.location}
-            salary={job.salary}
-            type={job.type}
-            category={job.category}
-          />
-          ))}
+            {/* Job Listings */}
+            <div className="space-y-6">
+              {currentJobs.map((job) => (
+                <JobListCard
+                  key={job.id}
+                  title={job.title}
+                  description={job.description}
+                  image={job.image}
+                  date={new Date().toISOString()} // Replace with actual date
+                  category={job.category}
+                />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            <div className="flex justify-center mt-8 space-x-2">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentPage(index + 1)}
+                  className={`px-4 py-2 rounded-lg transition-colors ${
+                    currentPage === index + 1
+                      ? 'bg-red-600 text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-600'
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Sticky Sidebar */}
+          <div className="w-1/3 relative">
+            <div className="sticky top-4">
+              <Sidebar />
+            </div>
+          </div>
         </div>
-        {/* Second Hero Section */}
-        <HeroSection2 />
-        <HeroSection3 />
       </div>
+
+      <HeroSection2 />|
+      
     </>
   );
 }

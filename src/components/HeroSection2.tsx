@@ -30,7 +30,7 @@ export default function HeroSection2() {
   return (
     <section 
       aria-label="Job search features and opportunities"
-      className="relative bg-white dark:bg-gray-900 py-16"
+      className="relative bg-gray-50 py-16"
     >
       {/* Structured Data */}
       <script
@@ -42,7 +42,7 @@ export default function HeroSection2() {
         <div 
           role="region" 
           aria-labelledby="job-search-heading"
-          className="bg-white dark:bg-gray-800 rounded-3xl p-8 md:p-12 shadow-lg"
+          className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border-2 border-red-600/20 hover:border-red-600 transition-colors"
         >
           <motion.h2
             id="job-search-heading"
@@ -50,7 +50,7 @@ export default function HeroSection2() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
             viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-            className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center"
+            className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center"
           >
             Looking For More Jobs in Dubai & Across UAE?
           </motion.h2>
@@ -67,7 +67,7 @@ export default function HeroSection2() {
               >
                 <svg
                   aria-hidden="true"
-                  className="flex-shrink-0 w-5 h-5 text-green-500"
+                  className="flex-shrink-0 w-5 h-5 text-red-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -79,7 +79,7 @@ export default function HeroSection2() {
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
-                <p className="text-gray-600 dark:text-gray-300 text-base md:text-lg">
+                <p className="text-gray-600 text-base md:text-lg">
                   {feature}
                 </p>
               </motion.li>
@@ -96,7 +96,7 @@ export default function HeroSection2() {
             <Link
               href="/jobs"
               aria-label="View all available job openings"
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-medium transition-colors text-base md:text-lg"
+              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-colors text-base md:text-lg hover:shadow-md hover:shadow-red-500/20"
             >
               View All Job Openings
               <span 
