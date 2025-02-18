@@ -2,14 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@sanity/client";
-import { JobCard } from "@/components/JobCard";
 import Head from "next/head";
 import HeroSection from "@/components/HeroSection"; 
 import HeroSection2 from "@/components/HeroSection2";
-import HeroSection3 from "@/components/HeroSection3";
 import { JobListCard } from "@/components/JobListCard";
 import { Sidebar } from "@/components/Sidebar";
-
 
 interface JobPost {
   id: string;
@@ -157,7 +154,7 @@ export default function Home() {
         </div>
       </div>
 
-      <HeroSection2 />|
+      <HeroSection2 />
       
     </>
   );

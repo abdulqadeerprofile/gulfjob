@@ -33,7 +33,7 @@ export function Sidebar() {
           {[1, 2, 3].map((_, i) => (
             <div key={i} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
               <p className="text-gray-600 text-sm line-clamp-2">
-                "Great opportunity for experienced developers..."
+                &quot;Great opportunity for experienced developers...&quot;
               </p>
               <span className="text-xs text-gray-500 mt-1 block">- John Doe</span>
             </div>

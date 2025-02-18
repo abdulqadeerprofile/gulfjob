@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import StatsStrip from './StatsStrip';
 import LatestJobs from './LatestJobs';
 import HeroSection2 from './HeroSection2';
+import Image from 'next/image';
 
 interface Job {
   id: number;
@@ -45,14 +46,26 @@ const JobCarousel: React.FC = () => {
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const cardsToShow = 3;
 
+  const handleNext = (): void => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setIsPaused(true);
+    setCurrentIndex((prev) => {
+      const newIndex = prev >= jobs.length - cardsToShow ? 0 : prev + 1;
+      return newIndex;
+    });
+    setTimeout(() => {
+      setIsAnimating(false);
+      setTimeout(() => setIsPaused(false), 4000);
+    }, 500);
+  };
+
   useEffect(() => {
     if (!isPaused) {
-      const timer = setInterval(() => {
-        handleNext();
-      }, 4000);
+      const timer = setInterval(handleNext, 4000);
       return () => clearInterval(timer);
     }
-  }, [isPaused]);
+  }, [isPaused, jobs.length, isAnimating]);
 
   const handlePrev = (): void => {
     if (isAnimating) return;
@@ -61,20 +74,6 @@ const JobCarousel: React.FC = () => {
     setCurrentIndex((prev) => {
       const newIndex = prev === 0 ? jobs.length - cardsToShow : prev - 1;
       return newIndex < 0 ? 0 : newIndex;
-    });
-    setTimeout(() => {
-      setIsAnimating(false);
-      setTimeout(() => setIsPaused(false), 4000);
-    }, 500);
-  };
-
-  const handleNext = (): void => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setIsPaused(true);
-    setCurrentIndex((prev) => {
-      const newIndex = prev >= jobs.length - cardsToShow ? 0 : prev + 1;
-      return newIndex;
     });
     setTimeout(() => {
       setIsAnimating(false);
@@ -110,18 +109,20 @@ const JobCarousel: React.FC = () => {
                   transform: `translateX(-${currentIndex * (100 / cardsToShow)}%)`,
                 }}
               >
-                {jobs.map((job) => (
+                {jobs.map((job, index) => (
                   <div
                     key={job.id}
                     className="w-1/3 flex-shrink-0 px-4 py-6"
                   >
                     <div className="bg-white rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:shadow-red-500/20 h-[480px] border-2 border-red-600/20 hover:border-red-600 group hover:-translate-y-1">
                       <div className="h-2/5 relative overflow-hidden rounded-t-xl">
-                        <img 
+                        <Image 
                           src={job.image} 
                           alt={`${job.title} at ${job.company}`}
+                          width={800}
+                          height={600}
                           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
+                          priority={index < 3}
                         />
                         <div className="absolute top-4 left-4 z-20">
                           <span className="px-4 py-1.5 bg-black/50 backdrop-blur-sm text-white rounded-full text-sm border border-white/20 group-hover:bg-black/60 transition-colors">
