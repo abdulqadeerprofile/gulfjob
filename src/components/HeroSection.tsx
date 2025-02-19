@@ -83,38 +83,39 @@ const JobCarousel: React.FC = () => {
 
   return (
     <>
-      <div className="w-full bg-gray-50 pt-4 pb-16"> {/* Changed pt-8 to pt-4 */}
-        <div className="max-w-7xl mx-auto px-4 -mt-12"> {/* Changed -mt-6 to -mt-12 */}
+      <div className="w-full bg-gray-50 pt-4 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12">
           <div className="relative">
+            {/* Navigation Buttons */}
             <button 
               onClick={handlePrev}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-red-600 rounded-full p-3 shadow-lg hover:bg-red-700 transition-all hover:scale-110 active:scale-95"
-              aria-label="Previous slide"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 z-10 bg-red-600 rounded-full p-2 sm:p-3 shadow-lg hover:bg-red-700 transition-all hover:scale-110 active:scale-95 focus:outline-none"
             >
-              <ChevronLeft className="w-6 h-6 text-white" />
+              <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </button>
             
             <button 
               onClick={handleNext}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-red-600 rounded-full p-3 shadow-lg hover:bg-red-700 transition-all hover:scale-110 active:scale-95"
-              aria-label="Next slide"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 z-10 bg-red-600 rounded-full p-2 sm:p-3 shadow-lg hover:bg-red-700 transition-all hover:scale-110 active:scale-95 focus:outline-none"
             >
-              <ChevronRight className="w-6 h-6 text-white" />
+              <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </button>
 
-            <div className="overflow-hidden px-4">
+            {/* Carousel Container */}
+            <div className="overflow-hidden px-2 sm:px-4">
               <div 
-                className="flex transition-transform duration-500 ease-out py-8"
+                className="flex transition-transform duration-500 ease-out py-4 sm:py-8"
                 style={{
-                  transform: `translateX(-${currentIndex * (100 / cardsToShow)}%)`,
+                  transform: `translateX(-${currentIndex * (100 / (cardsToShow))}%)`,
                 }}
               >
                 {jobs.map((job, index) => (
                   <div
                     key={job.id}
-                    className="w-1/3 flex-shrink-0 px-4 py-6"
+                    className="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4"
                   >
-                    <div className="bg-white rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:shadow-red-500/20 h-[480px] border-2 border-red-600/20 hover:border-red-600 group hover:-translate-y-1">
+                    <div className="bg-white rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:shadow-red-500/20 h-[400px] sm:h-[480px] border-2 border-red-600/20 hover:border-red-600 group hover:-translate-y-1">
+                      {/* Card Content */}
                       <div className="h-2/5 relative overflow-hidden rounded-t-xl">
                         <Image 
                           src={job.image} 
@@ -158,7 +159,8 @@ const JobCarousel: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-center mt-8 space-x-2">
+          {/* Pagination Dots */}
+          <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
             {Array.from({ length: Math.ceil(jobs.length / cardsToShow) }).map((_, index) => (
               <button
                 key={index}
@@ -178,6 +180,7 @@ const JobCarousel: React.FC = () => {
           </div>
         </div>
       </div>
+
       <StatsStrip />
       <LatestJobs />
       <HeroSection2 />

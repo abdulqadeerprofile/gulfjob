@@ -1,82 +1,61 @@
 import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-interface LatestJob {
-  title: string;
-  description: string;
-}
-
-const latestJobs: LatestJob[] = [
-  {
-    title: "Female Beauty Advisor/Promoter",
-    description: "We are looking for a Female Beauty Advisor/Promoter to promote Baby Care pr..."
-  },
-  {
-    title: "Experienced Tailor",
-    description: "Require a Master Cutter Tailor Experienced in Sewing all kinds of clothes ,..."
-  },
-  {
-    title: "Lifeguard",
-    description: "Rescuer who supervises the safety and rescue of swimmers, surfers, and othe..."
-  },
-  {
-    title: "Security Guard",
-    description: "Security guards protect the people, buildings, and land in a variety of loc..."
-  },
-  {
-    title: "Administration Coordinator",
-    description: "Coordinator helps keep our organization running smoothly by handling all ad..."
-  },
-  {
-    title: "Architect Consultant",
-    description: "need 5 year uae experienced architect my company"
-  },
-  {
-    title: "Company Driver",
-    description: "bjectives of this role •Deliver materials to designated locations in a time..."
-  },
-  {
-    title: "Relationship Officer",
-    description: "WALK IN INTERVIEW - Key Responsibilities: Sales Generation: Promote and sel..."
-  },
-  {
-    title: "Accountant",
-    description: "Experience with accounting software and data entry Excellent understanding..."
-  },
-  {
-    title: "Sales Director",
-    description: "Key Responsibilities: •Develop and implement sales strategies to drive gro..."
-  }
-];
-
-const LatestJobs: React.FC = () => {
+const LatestJobs = () => {
   return (
-    <div className="w-full bg-white py-16">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8">
-          Latest Jobs in Gulf Only
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {latestJobs.map((job, index) => (
-            <div 
-              key={index}
-              className="p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow group cursor-pointer border border-gray-100"
+    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Latest Job Opportunities
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
+            Explore the newest job listings from top companies across various industries
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {[1, 2, 3, 4, 5, 6].map((job) => (
+            <Link 
+              href={`/job/${job}`} 
+              key={job}
+              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group"
             >
-              <h3 className="text-xl font-semibold text-gray-900 group-hover:text-red-600 transition-colors">
-                {job.title}
-              </h3>
-              <p className="mt-2 text-gray-600 line-clamp-2">
-                {job.description}
-              </p>
-              <div className="mt-4 flex justify-end">
-                <button className="text-red-600 hover:text-red-700 font-medium">
-                  View Details →
-                </button>
+              <div className="aspect-w-16 aspect-h-9 relative">
+                <Image
+                  src={`https://via.placeholder.com/600x400`}
+                  alt="Job thumbnail"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-            </div>
+              <div className="p-6">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900 group-hover:text-red-600 transition-colors">
+                  Senior Software Engineer
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  Join our dynamic team and work on cutting-edge technologies...
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Dubai, UAE</span>
+                  <span className="text-sm font-medium text-red-600">$8k-12k/mo</span>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
+
+        <div className="text-center mt-12">
+          <Link 
+            href="/jobs"
+            className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors duration-300"
+          >
+            View All Jobs
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
