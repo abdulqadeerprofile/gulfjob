@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Script from 'next/script';
 import './globals.css';
+import FloatingButtons from '@/components/FloatingButtons';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <Header />
         <main className="min-h-screen">{children}</main>
+        <FloatingButtons />
         <Footer />
       </body>
     </html>

@@ -11,7 +11,7 @@ interface Job {
   title: string;
   company: string;
   description: string;
-  image: string;
+  image?: string;
   slug: string;
   location: string;
   salary: string;
@@ -25,7 +25,6 @@ const jobs: Job[] = [
     title: 'Senior Software Engineer',
     company: 'Tech Corp',
     description: 'Join our dynamic team of software engineers working on cutting-edge technologies.',
-    image: 'https://via.placeholder.com/150',
     slug: 'senior-software-engineer',
     location: 'Dubai, UAE',
     salary: '$8,000 - $12,000',
@@ -37,7 +36,6 @@ const jobs: Job[] = [
     title: 'Medical Doctor',
     company: 'Healthcare Plus',
     description: 'Experienced medical doctor needed for our expanding healthcare facility.',
-    image: 'https://via.placeholder.com/150',
     slug: 'medical-doctor',
     location: 'Abu Dhabi, UAE',
     salary: '$15,000 - $20,000',
@@ -49,7 +47,6 @@ const jobs: Job[] = [
     title: 'Financial Analyst',
     company: 'Global Finance',
     description: 'Seeking a skilled financial analyst to join our investment team.',
-    image: 'https://via.placeholder.com/150',
     slug: 'financial-analyst',
     location: 'Dubai, UAE',
     salary: '$6,000 - $9,000',
@@ -61,7 +58,6 @@ const jobs: Job[] = [
     title: 'University Professor',
     company: 'International University',
     description: 'Professor position available in our Computer Science department.',
-    image: 'https://via.placeholder.com/150',
     slug: 'university-professor',
     location: 'Sharjah, UAE',
     salary: '$10,000 - $15,000',
