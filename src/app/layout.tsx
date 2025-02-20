@@ -43,11 +43,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="lazyOnload"
         />
       </head>
-      <body className={inter.className}>
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <FloatingButtons />
-        <Footer />
+      <body className={`${inter.className} overflow-x-hidden`}> {/* Added overflow-x-hidden */}
+        <div className="relative overflow-x-hidden"> {/* Added wrapper with overflow-x-hidden */}
+          <Header />
+          <main className="min-h-screen overflow-x-hidden">{children}</main> {/* Added overflow-x-hidden */}
+          <FloatingButtons />
+          <Footer />
+        </div>
       </body>
     </html>
   );

@@ -40,10 +40,6 @@ export default function HeroSection2() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-
-        {/* Add CompanyLogos component */}
-        <CompanyLogos />
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             role="region" 
@@ -56,7 +52,7 @@ export default function HeroSection2() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
               viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-              className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center"
+              className="text-xl md:text-2xl font-bold text-gray-900 mb-6 text-center" // Reduced from text-2xl/3xl
             >
               Looking For More Jobs in Dubai & Across UAE?
             </motion.h2>
@@ -85,7 +81,7 @@ export default function HeroSection2() {
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  <p className="text-gray-600 text-base md:text-lg">
+                  <p className="text-sm md:text-base text-gray-600"> // Reduced from text-base/lg
                     {feature}
                   </p>
                 </motion.li>
@@ -121,10 +117,10 @@ export default function HeroSection2() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="relative z-10">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6"> // Reduced from text-3xl/4xl/5xl
                 Find Your Dream Job Today
               </h2>
-              <p className="text-gray-300 text-base sm:text-lg mb-8 max-w-xl">
+              <p className="text-sm sm:text-base text-gray-300 mb-8 max-w-xl"> // Reduced from text-base/lg
                 Connect with top employers and discover opportunities that match your skills and aspirations. Your next career move starts here.
               </p>
               <div className="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex">

@@ -5,10 +5,12 @@ import { createClient } from "@sanity/client";
 import Head from "next/head";
 import HeroSection from "@/components/HeroSection"; 
 import HeroSection2 from "@/components/HeroSection2";
-import { JobListCard } from "@/components/JobListCard";
-import { Sidebar } from "@/components/Sidebar";
 import ReviewsSection from "@/components/ReviewsSection";
 import FlagStrip from "@/components/FlagStrip";
+import StatsStrip from "@/components/StatsStrip";
+import LatestJobs from "@/components/LatestJobs";
+import CompanyLogos from "@/components/CompanyLogos";
+
 
 interface JobPost {
   id: string;
@@ -106,59 +108,13 @@ export default function Home() {
       </Head>
 
       <div className="pt-8">
-        <HeroSection />
+      <HeroSection />
       </div>
-      
-      <FlagStrip />  {/* Add this line */}
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex gap-8">
-          {/* Main Content */}
-          <div className="w-2/3">
-            <h1 className="text-4xl font-bold text-gray-800 mb-8">
-              Latest Career Opportunities
-            </h1>
-
-            {/* Job Listings */}
-            <div className="space-y-6">
-              {currentJobs.map((job) => (
-                <JobListCard
-                  key={job.id}
-                  title={job.title}
-                  description={job.description}
-                  image={job.image}
-                  date={new Date().toISOString()} // Replace with actual date
-                  category={job.category}
-                />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="flex justify-center mt-8 space-x-2">
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentPage(index + 1)}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
-                    currentPage === index + 1
-                      ? 'bg-red-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-600'
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sticky Sidebar */}
-          <div className="w-1/3 relative">
-            <div className="sticky top-4">
-              <Sidebar />
-            </div>
-          </div>
-        </div>
-      </div>      
+      <StatsStrip />
+      <LatestJobs />
+      <CompanyLogos/>      
+      <HeroSection2 />      
+      <FlagStrip />  
       <ReviewsSection />
     </>
   );
