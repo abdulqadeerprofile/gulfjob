@@ -162,7 +162,7 @@ export default function ReviewsSection() {
                         ))}
                       </div>
                       <blockquote className="text-xl text-gray-300 italic mb-4">
-                        "{reviews[currentIndex].quote}"
+                        &ldquo;{reviews[currentIndex].quote}&rdquo;
                       </blockquote>
                       <div className="space-y-1">
                         <h3 className="font-bold text-lg text-white">{reviews[currentIndex].name}</h3>

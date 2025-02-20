@@ -65,7 +65,7 @@ const JobCarousel: React.FC = () => {
       const timer = setInterval(handleNext, 4000);
       return () => clearInterval(timer);
     }
-  }, [isPaused, jobs.length, isAnimating]);
+  }, [isPaused, jobs.length, isAnimating, handleNext]); // Added handleNext to dependencies
 
   const handlePrev = (): void => {
     if (isAnimating) return;
