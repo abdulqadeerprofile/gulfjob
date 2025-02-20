@@ -99,9 +99,9 @@ export default function Footer() {
                   <div className="mb-6">
                     <Link
                       href="/"
-                      className="text-xl lg:text-2xl font-bold text-white inline-block"
+                      className="text-xl lg:text-2xl font-bold text-white inline-block font-bungee-shade"
                     >
-                      TheGulfCareerz
+                      Job Glob
                     </Link>
                   </div>
 

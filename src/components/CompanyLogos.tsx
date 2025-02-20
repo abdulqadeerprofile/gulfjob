@@ -17,7 +17,7 @@ const companies = [
 
 export default function CompanyLogos() {
   return (
-    <section className="py-12 bg-white">
+    <section className="py-8 bg-white">
       <div className="grid grid-cols-12">
         <div className="col-start-2 col-end-12">
           <div className="relative max-w-[1400px] mx-auto">
@@ -26,7 +26,7 @@ export default function CompanyLogos() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-center text-base sm:text-lg text-gray-600 mb-8"
+              className="text-center text-base sm:text-lg text-gray-600 mb-6"
             >
               Trusted by Leading Companies Across Gulf Countries
             </motion.h3>

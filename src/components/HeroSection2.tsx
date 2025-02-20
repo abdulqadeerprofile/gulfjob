@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import CompanyLogos from './CompanyLogos';
 
 export default function HeroSection2() {
   const features = [
@@ -31,118 +30,106 @@ export default function HeroSection2() {
 
   return (
     <>
-      <section 
-        aria-label="Job search features and opportunities"
-        className="relative bg-gray-50 mt-48 py-16" // Changed from mt-24 to mt-48 for much more spacing
-      >
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div 
-            role="region" 
-            aria-labelledby="job-search-heading"
-            className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border-2 border-red-600/20 hover:border-red-600 transition-colors relative z-10" // Added z-10
-          >
-            <motion.h2
-              id="job-search-heading"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-              className="text-xl md:text-2xl font-bold text-gray-900 mb-6 text-center" // Reduced from text-2xl/3xl
-            >
-              Looking For More Jobs in Dubai & Across UAE?
-            </motion.h2>
-
-            <ul className="grid gap-3 md:gap-4 mb-8">
-              {features.map((feature, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
+      <section className="bg-gray-50 mt-8 py-12"> {/* Reduced padding */}
+        <div className="grid grid-cols-12">
+          <div className="col-start-2 col-end-12">
+            <div className="relative max-w-[1400px] mx-auto">
+              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg border-2 border-red-600/20 hover:border-red-600 transition-colors"> {/* Reduced padding and border radius */}
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
                   viewport={{ once: true }}
-                  className="flex items-center gap-3"
+                  className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-4 text-center"
                 >
-                  <svg
-                    aria-hidden="true"
-                    className="flex-shrink-0 w-5 h-5 text-red-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <p className="text-sm md:text-base text-gray-600"> // Reduced from text-base/lg
-                    {feature}
-                  </p>
-                </motion.li>
-              ))}
-            </ul>
+                  Looking For More Jobs in Dubai & Across UAE?
+                </motion.h2>
 
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <Link
-                href="/jobs"
-                aria-label="View all available job openings"
-                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-colors text-base md:text-lg hover:shadow-md hover:shadow-red-500/20"
-              >
-                View All Job Openings
-                <span 
-                  role="presentation" 
-                  className="transition-transform duration-200 group-hover:translate-x-1"
+                <ul className="grid gap-2 sm:gap-3 mb-6"> {/* Reduced gap and margin */}
+                  {features.map((feature, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      viewport={{ once: true }}
+                      className="flex items-center gap-2"
+                    >
+                      <svg
+                        className="flex-shrink-0 w-4 h-4 text-red-500" // Reduced icon size
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <p className="text-xs sm:text-sm text-gray-600">
+                        {feature}
+                      </p>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  viewport={{ once: true }}
+                  className="text-center"
                 >
-                  →
-                </span>
-              </Link>
-            </motion.div>
+                  <Link
+                    href="/jobs"
+                    className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition-all hover:shadow-md hover:shadow-red-500/20"
+                  >
+                    View All Job Openings
+                    <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 sm:py-20 lg:py-24 overflow-hidden bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="relative z-10">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6"> // Reduced from text-3xl/4xl/5xl
-                Find Your Dream Job Today
-              </h2>
-              <p className="text-sm sm:text-base text-gray-300 mb-8 max-w-xl"> // Reduced from text-base/lg
-                Connect with top employers and discover opportunities that match your skills and aspirations. Your next career move starts here.
-              </p>
-              <div className="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex">
-                <button className="w-full sm:w-auto px-8 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors duration-300">
-                  Upload Your CV
-                </button>
-                <button className="w-full sm:w-auto px-8 py-3 bg-transparent text-white border border-white/30 rounded-lg font-medium hover:bg-white/10 transition-colors duration-300">
-                  Browse Companies
-                </button>
-              </div>
-            </div>
+      <section className="py-12 bg-gray-900"> {/* Reduced padding */}
+        <div className="grid grid-cols-12">
+          <div className="col-start-2 col-end-12">
+            <div className="relative max-w-[1400px] mx-auto">
+              <div className="grid lg:grid-cols-2 gap-8 items-center">
+                <div className="relative z-10">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-4">
+                    Find Your Dream Job Today
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-300 mb-6 max-w-xl">
+                    Connect with top employers and discover opportunities that match your skills and aspirations. Your next career move starts here.
+                  </p>
+                  <div className="space-y-3 sm:space-y-0 sm:space-x-3 sm:flex">
+                    <button className="w-full sm:w-auto px-6 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-all">
+                      Upload Your CV
+                    </button>
+                    <button className="w-full sm:w-auto px-6 py-2 bg-transparent text-white border border-white/30 rounded-lg text-sm font-medium hover:bg-white/10 transition-all">
+                      Browse Companies
+                    </button>
+                  </div>
+                </div>
 
-            <div className="relative lg:order-last order-first">
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl blur-3xl opacity-20 transform rotate-3"></div>
-              <div className="relative">
-                <Image
-                  src="/engineerHome.webp"
-                  alt="Career opportunities"
-                  width={600}
-                  height={400}
-                  className="rounded-2xl shadow-2xl w-full"
-                />
+                <div className="relative lg:order-last order-first">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-xl blur-2xl opacity-20 transform rotate-3"></div>
+                  <div className="relative">
+                    <Image
+                      src="/engineerHome.webp"
+                      alt="Career opportunities"
+                      width={600}
+                      height={400}
+                      className="rounded-xl shadow-xl w-full"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
