@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import CompanyLogos from './CompanyLogos';
 
 export default function HeroSection2() {
   const features = [
@@ -32,7 +33,7 @@ export default function HeroSection2() {
     <>
       <section 
         aria-label="Job search features and opportunities"
-        className="relative bg-gray-50 py-16"
+        className="relative bg-gray-50 mt-48 py-16" // Changed from mt-24 to mt-48 for much more spacing
       >
         {/* Structured Data */}
         <script
@@ -40,11 +41,14 @@ export default function HeroSection2() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
 
+        {/* Add CompanyLogos component */}
+        <CompanyLogos />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             role="region" 
             aria-labelledby="job-search-heading"
-            className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border-2 border-red-600/20 hover:border-red-600 transition-colors"
+            className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border-2 border-red-600/20 hover:border-red-600 transition-colors relative z-10" // Added z-10
           >
             <motion.h2
               id="job-search-heading"
@@ -137,7 +141,7 @@ export default function HeroSection2() {
               <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl blur-3xl opacity-20 transform rotate-3"></div>
               <div className="relative">
                 <Image
-                  src="/hero-image.jpg"
+                  src="/engineerHome.webp"
                   alt="Career opportunities"
                   width={600}
                   height={400}

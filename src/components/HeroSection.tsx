@@ -83,7 +83,7 @@ const JobCarousel: React.FC = () => {
 
   return (
     <>
-      <div className="w-full bg-gray-50 pt-4 pb-16">
+      <div className="w-full pt-4 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12">
           <div className="relative">
             {/* Navigation Buttons */}

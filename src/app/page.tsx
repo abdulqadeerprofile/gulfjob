@@ -7,6 +7,8 @@ import HeroSection from "@/components/HeroSection";
 import HeroSection2 from "@/components/HeroSection2";
 import { JobListCard } from "@/components/JobListCard";
 import { Sidebar } from "@/components/Sidebar";
+import ReviewsSection from "@/components/ReviewsSection";
+import FlagStrip from "@/components/FlagStrip";
 
 interface JobPost {
   id: string;
@@ -103,7 +105,11 @@ export default function Home() {
         />
       </Head>
 
-      <HeroSection />
+      <div className="pt-8">
+        <HeroSection />
+      </div>
+      
+      <FlagStrip />  {/* Add this line */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex gap-8">
@@ -152,10 +158,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
-
-      <HeroSection2 />
-      
+      </div>      
+      <ReviewsSection />
     </>
   );
 }
