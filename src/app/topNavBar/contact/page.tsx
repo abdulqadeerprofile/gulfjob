@@ -19,7 +19,7 @@ const Contact = () => {
                 Get in Touch
               </h1>
               <p className="text-base lg:text-lg text-gray-600 max-w-3xl mx-auto">
-                We're here to help and answer any questions you might have
+                We&apos;re here to help and answer any questions you might have
               </p>
               <p>Don&apos;t hesitate to reach out</p>
             </div>

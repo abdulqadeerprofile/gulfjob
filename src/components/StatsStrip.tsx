@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Building2, Users2, Briefcase, Globe2 } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 
@@ -21,7 +21,7 @@ const StatsStrip = () => {
     'USA', 'Canada', 'UK', 'Germany', 'Singapore', 'Australia'
   ];
 
-  const stats = [
+  const stats = useMemo(() => [
     { 
       label: 'Total Companies',
       value: 15000,
@@ -40,47 +40,47 @@ const StatsStrip = () => {
       displayValue: '25K+',
       Icon: Briefcase 
     }
-  ];
+  ], []); // Empty dependency array since stats are static
 
   // Animate numbers when in view
   useEffect(() => {
-    if (inView) {
-      const duration = 2000; // 2 seconds
-      const steps = 60;
-      const interval = duration / steps;
+    if (!inView) return;
 
-      const counters = stats.map(stat => ({
-        start: 0,
-        end: stat.value,
-        current: 0
-      }));
+    const duration = 2000;
+    const steps = 60;
+    const interval = duration / steps;
 
-      const timer = setInterval(() => {
-        let completed = true;
+    const counters = stats.map(stat => ({
+      start: 0,
+      end: stat.value,
+      current: 0
+    }));
 
-        setCounts(prev => {
-          const newCounts = { ...prev };
-          stats.forEach((stat, i) => {
-            if (counters[i].current < counters[i].end) {
-              counters[i].current += counters[i].end / steps;
-              completed = false;
-            }
-            newCounts[stat.label.toLowerCase().replace(/\s+/g, '')] = Math.min(
-              Math.round(counters[i].current),
-              counters[i].end
-            );
-          });
-          return newCounts;
+    const timer = setInterval(() => {
+      let completed = true;
+
+      setCounts(prev => {
+        const newCounts = { ...prev };
+        stats.forEach((stat, i) => {
+          if (counters[i].current < counters[i].end) {
+            counters[i].current += counters[i].end / steps;
+            completed = false;
+          }
+          newCounts[stat.label.toLowerCase().replace(/\s+/g, '')] = Math.min(
+            Math.round(counters[i].current),
+            counters[i].end
+          );
         });
+        return newCounts;
+      });
 
-        if (completed) {
-          clearInterval(timer);
-        }
-      }, interval);
+      if (completed) {
+        clearInterval(timer);
+      }
+    }, interval);
 
-      return () => clearInterval(timer);
-    }
-  }, [inView, stats]); // Add stats to dependency array
+    return () => clearInterval(timer);
+  }, [inView, stats]);
 
   // Rotate countries
   useEffect(() => {
