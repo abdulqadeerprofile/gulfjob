@@ -5,10 +5,12 @@ import Link from "next/link";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
+  type FooterLink = string | { name: string; path: string };
+  
   const footerSections = [
     {
       title: "Jobs By Organizations",
-      links: ["ADNOC", "Emaar", "Alshaya", "Etisalat", "Almarai", "DEWA"],
+      links: ["ADNOC", "Emaar", "Alshaya", "Etisalat", "Almarai", "DEWA"] as string[],
     },
     {
       title: "Jobs By Professions",
@@ -19,20 +21,20 @@ export default function Footer() {
         "IT",
         "Electrician",
         "Receptionist",
-      ],
+      ] as string[],
     },
     {
       title: "More Info",
       links: [
-        "About Us",
-        "Privacy Policy",
-        "Terms and Conditions",
-        "Disclaimer",
-        "Job Ad Report",
-        "Contact Us",
-      ],
+        { name: "About Us", path: "/topNavBar/about" },
+        { name: "Privacy Policy", path: "/topNavBar/privacy" },
+        { name: "Terms and Conditions", path: "/topNavBar/terms" },
+        { name: "Disclaimer", path: "/topNavBar/disclaimer" },
+        { name: "Job Ad Report", path: "/topNavBar/job-report" },
+        { name: "Contact Us", path: "/topNavBar/contact" },
+      ] as { name: string; path: string }[],
     },
-  ];
+  ] as const;
 
   const socialLinks = [
     {
@@ -74,20 +76,35 @@ export default function Footer() {
                     {section.title}
                   </h3>
                   <ul className="space-y-2">
-                    {section.links.map((link, linkIdx) => (
-                      <motion.li
-                        key={linkIdx}
-                        whileHover={{ x: 5 }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                      >
-                        <Link
-                          href="#"
-                          className="text-gray-400 hover:text-red-500 transition-colors text-xs block py-0.5"
-                        >
-                          {link}
-                        </Link>
-                      </motion.li>
-                    ))}
+                    {section.title === "More Info"
+                      ? section.links.map((link: any, linkIdx: number) => (
+                          <motion.li
+                            key={linkIdx}
+                            whileHover={{ x: 5 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                          >
+                            <Link
+                              href={link.path}
+                              className="text-gray-400 hover:text-red-500 transition-colors text-xs block py-0.5"
+                            >
+                              {link.name}
+                            </Link>
+                          </motion.li>
+                        ))
+                      : section.links.map((link: string, linkIdx: number) => (
+                          <motion.li
+                            key={linkIdx}
+                            whileHover={{ x: 5 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                          >
+                            <Link
+                              href="#"
+                              className="text-gray-400 hover:text-red-500 transition-colors text-xs block py-0.5"
+                            >
+                              {link}
+                            </Link>
+                          </motion.li>
+                        ))}
                   </ul>
                 </div>
               ))}
