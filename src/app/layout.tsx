@@ -1,17 +1,33 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import dynamic from 'next/dynamic';
 import Script from 'next/script';
 import './globals.css';
-import FloatingButtons from '@/components/FloatingButtons';
-import favicon from './favicon.png'
+import favicon from './favicon.png';
 
-const inter = Inter({ subsets: ['latin'] });
+// Dynamic imports for components
+const Header = dynamic(() => import('@/components/Header'), { ssr: true });
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: true });
+const FloatingButtons = dynamic(() => import('@/components/FloatingButtons'), {
+  ssr: false,
+  loading: () => <div className="hidden" /> // Placeholder while loading
+});
 
+// Optimize font loading
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true 
+});
+
+// Optimized metadata
 export const metadata: Metadata = {
-  title: 'My Professional Blog',
+  metadataBase: new URL('https://yourwebsite.com'),
+  title: {
+    default: 'My Professional Blog',
+    template: '%s | My Professional Blog'
+  },
   description: 'A professional blogging website with SEO optimization and AdSense compliance.',
   keywords: ['blog', 'jobs', 'news', 'internships'],
   authors: [{ name: 'Your Name', url: 'https://yourwebsite.com' }],
@@ -34,23 +50,40 @@ export const metadata: Metadata = {
   icons: {
     icon: favicon.src
   },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.className}>
       <head>
-        {/* Google AdSense Script */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_AD_CLIENT_ID"
           strategy="lazyOnload"
+          crossOrigin="anonymous"
         />
+        <meta name="theme-color" content="#ffffff" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
       </head>
-      <body className={`${inter.className} overflow-x-hidden`}> {/* Added overflow-x-hidden */}
-        <div className="relative overflow-x-hidden"> {/* Added wrapper with overflow-x-hidden */}
+      <body className="overflow-x-hidden">
+        <div className="relative flex min-h-screen flex-col">
           <Header />
-          <main className="min-h-screen overflow-x-hidden">{children}</main> {/* Added overflow-x-hidden */}
+          <main className="flex-grow overflow-x-hidden">
+            {children}
+          </main>
           <FloatingButtons />
           <Footer />
         </div>

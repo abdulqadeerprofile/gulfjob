@@ -1,22 +1,23 @@
 'use client';
-import { motion } from 'framer-motion';
+import { memo, useMemo } from 'react';
+import { motion, useReducedMotion, TargetAndTransition } from 'framer-motion';
 import * as ReactCountryFlag from 'country-flag-icons/react/3x2';
+import { useInView } from 'react-intersection-observer';
 
-// Type guard to check if a country code exists in the Flags object
-const hasFlag = (code: string): code is keyof typeof ReactCountryFlag => {
-  return code in ReactCountryFlag;
-};
+// Type definitions
+type CountryData = { code: string; name: string };
 
-const gulfCountries = [
+// Memoized static data
+const gulfCountries: CountryData[] = useMemo(() => [
   { code: 'AE', name: 'United Arab Emirates' },
   { code: 'SA', name: 'Saudi Arabia' },
   { code: 'QA', name: 'Qatar' },
   { code: 'KW', name: 'Kuwait' },
   { code: 'BH', name: 'Bahrain' },
   { code: 'OM', name: 'Oman' }
-];
+], []);
 
-const otherCountries = [
+const otherCountries: CountryData[] = useMemo(() => [
   { code: 'US', name: 'United States' },
   { code: 'GB', name: 'United Kingdom' },
   { code: 'CA', name: 'Canada' },
@@ -25,58 +26,95 @@ const otherCountries = [
   { code: 'DE', name: 'Germany' },
   { code: 'FR', name: 'France' },
   { code: 'IN', name: 'India' }
-];
+], []);
 
-const allCountries = [...gulfCountries, ...otherCountries];
-const duplicatedCountries = [...allCountries, ...allCountries];
-
-export default function FlagStrip() {
+// Memoized flag component
+const CountryFlag = memo(({ country, index }: { country: CountryData; index: number }) => {
+  const hasFlag = (code: string): code is keyof typeof ReactCountryFlag => code in ReactCountryFlag;
+  if (!hasFlag(country.code)) return null;
+  
+  const FlagComponent = ReactCountryFlag[country.code];
+  
   return (
-    <div className="bg-white py-8"> {/* Reduced from py-12 */}
+    <div
+      className="flex flex-col items-center group cursor-pointer"
+      style={{ transform: 'translateZ(0)' }} // Hardware acceleration
+    >
+      <div className="w-16 h-12 sm:w-20 sm:h-14 overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-300 
+        group-hover:scale-105 border border-gray-200 hover:border-red-500">
+        <FlagComponent
+          title={country.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <span className="mt-2 text-xs sm:text-sm font-medium text-gray-600 group-hover:text-red-600 
+        transition-colors whitespace-nowrap">
+        {country.name}
+      </span>
+    </div>
+  );
+});
+
+CountryFlag.displayName = 'CountryFlag';
+
+// Main component
+export default function FlagStrip() {
+  // Optimize animation for reduced motion preference
+  const prefersReducedMotion = useReducedMotion();
+  
+  // Use intersection observer for lazy loading
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: '200px',
+  });
+
+  // Memoize countries array
+  const allCountries = useMemo(() => [...gulfCountries, ...otherCountries], []);
+  const duplicatedCountries = useMemo(() => [...allCountries, ...allCountries], [allCountries]);
+
+  // Fix animation settings type
+  const animationSettings = useMemo(() => ({
+    animate: {
+      x: prefersReducedMotion ? 0 : -50 * duplicatedCountries.length,
+    } as TargetAndTransition,
+    transition: {
+      duration: prefersReducedMotion ? 0 : 60,
+      ease: "linear",
+      repeat: Infinity,
+      repeatType: "loop" as const,
+    }
+  }), [duplicatedCountries.length, prefersReducedMotion]);
+
+  return (
+    <div className="bg-white py-8" ref={ref}>
       <div className="grid grid-cols-12">
         <div className="col-start-2 col-end-12">
           <div className="relative max-w-[1400px] mx-auto">
-            <h3 className="text-center text-lg sm:text-xl font-semibold text-gray-900 mb-6"> {/* Reduced text size */}
+            <h3 className="text-center text-lg sm:text-xl font-semibold text-gray-900 mb-6">
               Find Jobs Across Leading Countries
             </h3>
             
-            <div className="relative overflow-hidden">
-              <motion.div
-                className="flex gap-8 sm:gap-12 py-4" // Reduced gap and padding
-                animate={{
-                  x: [0, -50 * duplicatedCountries.length],
-                }}
-                transition={{
-                  duration: 60,
-                  ease: "linear",
-                  repeat: Infinity,
-                }}
-              >
-                {duplicatedCountries.map((country, index) => {
-                  if (!hasFlag(country.code)) return null;
-                  const FlagComponent = ReactCountryFlag[country.code];
-                  
-                  return (
-                    <div
+            {inView && (
+              <div className="relative overflow-hidden">
+                <motion.div
+                  className="flex gap-8 sm:gap-12 py-4"
+                  animate={animationSettings.animate}
+                  transition={animationSettings.transition}
+                  style={{ 
+                    willChange: 'transform',
+                    backfaceVisibility: 'hidden'
+                  }}
+                >
+                  {duplicatedCountries.map((country, index) => (
+                    <CountryFlag
                       key={`${country.code}-${index}`}
-                      className="flex flex-col items-center group cursor-pointer"
-                    >
-                      <div className="w-16 h-12 sm:w-20 sm:h-14 overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-300 
-                        group-hover:scale-105 border border-gray-200 hover:border-red-500"> {/* Reduced size and effects */}
-                        <FlagComponent
-                          title={country.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <span className="mt-2 text-xs sm:text-sm font-medium text-gray-600 group-hover:text-red-600 
-                        transition-colors whitespace-nowrap"> {/* Reduced text size and spacing */}
-                        {country.name}
-                      </span>
-                    </div>
-                  );
-                })}
-              </motion.div>
-            </div>
+                      country={country}
+                      index={index}
+                    />
+                  ))}
+                </motion.div>
+              </div>
+            )}
           </div>
         </div>
       </div>
