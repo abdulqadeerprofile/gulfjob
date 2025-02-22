@@ -72,11 +72,9 @@ export default function FlagStrip() {
   const allCountries = useMemo(() => [...gulfCountries, ...otherCountries], []);
   const duplicatedCountries = useMemo(() => [...allCountries, ...allCountries], [allCountries]);
 
-  // Fix animation settings type
-  const animationSettings = useMemo(() => ({
-    animate: {
-      x: prefersReducedMotion ? 0 : -50 * duplicatedCountries.length,
-    } as TargetAndTransition,
+  // Simplified animation settings
+  const animationConfig = useMemo(() => ({
+    x: prefersReducedMotion ? 0 : [-50 * duplicatedCountries.length, 0],
     transition: {
       duration: prefersReducedMotion ? 0 : 60,
       ease: "linear",
@@ -98,8 +96,7 @@ export default function FlagStrip() {
               <div className="relative overflow-hidden">
                 <motion.div
                   className="flex gap-8 sm:gap-12 py-4"
-                  animate={animationSettings.animate}
-                  transition={animationSettings.transition}
+                  animate={animationConfig}
                   style={{ 
                     willChange: 'transform',
                     backfaceVisibility: 'hidden'
