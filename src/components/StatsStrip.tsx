@@ -80,7 +80,7 @@ const StatsStrip = () => {
 
       return () => clearInterval(timer);
     }
-  }, [inView]);
+  }, [inView, stats]); // Add stats to dependency array
 
   // Rotate countries
   useEffect(() => {
@@ -89,7 +89,7 @@ const StatsStrip = () => {
     }, 2000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [countries.length]); // Add countries.length to dependency array
 
   return (
     <div className="bg-gradient-to-r from-red-600 to-red-800 py-8">

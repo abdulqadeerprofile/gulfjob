@@ -74,6 +74,11 @@ const JobCarousel: React.FC = () => {
     }
   }, [isPaused, cardsToShow]); // Added cardsToShow as dependency
 
+  useEffect(() => {
+    const interval = setInterval(handleNext, 5000);
+    return () => clearInterval(interval);
+  }, [handleNext]); // Add handleNext to dependency array
+
   // Modified handleNext to immediately return to first slide
   const handleNext = (): void => {
     if (isAnimating) return;

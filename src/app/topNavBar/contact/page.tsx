@@ -21,6 +21,7 @@ const Contact = () => {
               <p className="text-base lg:text-lg text-gray-600 max-w-3xl mx-auto">
                 We're here to help and answer any questions you might have
               </p>
+              <p>Don&apos;t hesitate to reach out</p>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8 mb-12">
