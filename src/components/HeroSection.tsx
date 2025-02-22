@@ -74,23 +74,24 @@ const JobCarousel: React.FC = () => {
     }
   }, [isPaused, cardsToShow]); // Added cardsToShow as dependency
 
+  // Move handleNext into a useCallback
   const handleNext = useCallback((): void => {
     if (isAnimating) return;
     setIsAnimating(true);
     setIsPaused(true);
     setCurrentIndex((prev) => {
       const nextIndex = prev + cardsToShow;
-      // Immediately return to first slide if we've reached the end
       return nextIndex >= jobs.length - cardsToShow ? 0 : nextIndex;
     });
     setTimeout(() => {
       setIsAnimating(false);
-      setTimeout(() => setIsPaused(false), 2000); // Reduced pause time from 4000 to 2000ms
-    }, 300); // Reduced animation duration from 500 to 300ms
+      setTimeout(() => setIsPaused(false), 2000);
+    }, 300);
   }, [isAnimating, cardsToShow, jobs.length]);
 
+  // Update useEffect to use the memoized handleNext
   useEffect(() => {
-    const interval = setInterval(handleNext, 5000);
+    const interval = setInterval(() => handleNext(), 5000);
     return () => clearInterval(interval);
   }, [handleNext]);
 

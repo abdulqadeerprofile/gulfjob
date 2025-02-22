@@ -28,7 +28,7 @@ const AboutPage = () => {
             <div className="bg-white rounded-lg shadow-lg p-6 lg:p-8 mb-12">
               <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900">Our Mission</h2>
               <p className="text-base text-gray-600 mb-6">
-                At JobGlob, we're dedicated to bridging the gap between talented professionals and leading employers in the UAE and Gulf region. Our mission is to facilitate meaningful career connections that drive both individual and organizational success.
+                At JobGlob, we&apos;re dedicated to bridging the gap between talented professionals and leading employers in the UAE and Gulf region. Our mission is to facilitate meaningful career connections that drive both individual and organizational success.
               </p>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center">
@@ -104,7 +104,7 @@ const AboutPage = () => {
             <div className="text-center bg-gradient-to-r from-red-600 to-red-800 text-white rounded-lg p-8 lg:p-12">
               <h2 className="text-2xl lg:text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
               <p className="mb-6 text-base lg:text-lg">
-                Join thousands of professionals who've found their dream jobs through JobGlob
+                Join thousands of professionals who&apos;ve found their dream jobs through JobGlob
               </p>
               <button className="bg-white text-red-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-base">
                 Browse Jobs Now
