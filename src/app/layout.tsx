@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import Script from 'next/script';
 import './globals.css';
 import FloatingButtons from '@/components/FloatingButtons';
+import favicon from './favicon.png'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,6 +30,9 @@ export const metadata: Metadata = {
     ],
     locale: 'en_US',
     type: 'website',
+  },
+  icons: {
+    icon: favicon.src
   },
 };
 

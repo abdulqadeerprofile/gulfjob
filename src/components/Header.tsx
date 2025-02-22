@@ -42,12 +42,12 @@ export default function Header() {
                 {/* Desktop Utility Links */}
                 <div className="hidden lg:flex items-center space-x-6 text-sm ml-auto">
                   {[
-                    ['About Us', '/about'],
-                    ['Privacy Policy', '/privacy'],
-                    ['Disclaimer', '/disclaimer'],
-                    ['Job Ad Report', '/report-job'],
-                    ['Terms and Conditions', '/terms'],
-                    ['Contact Us', '/contact']
+                    ['About Us', '/topNavBar/about'],
+                    ['Privacy Policy', '/topNavBar/privacy'],
+                    ['Disclaimer', '/topNavBar/disclaimer'],
+                    ['Job Ad Report', '/topNavBar/job-report'],
+                    ['Terms and Conditions', '/topNavBar/terms'],
+                    ['Contact Us', '/topNavBar/contact']
                   ].map(([title, url]) => (
                     <Link
                       key={url}
@@ -87,7 +87,7 @@ export default function Header() {
                 {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center w-full">
                   <Link 
-                    href="/" 
+                    href="/belowNavBar/home-page" 
                     className="flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 hover:bg-white group mr-6"
                   >
                     <TbHome className="w-5 h-5 text-white transition-colors duration-200 group-hover:text-red-800" />
@@ -95,16 +95,16 @@ export default function Header() {
                   
                   <div className="flex items-center justify-between w-full">
                     {[
-                      ['Walk-in Interview', '/walk-in-interview'],
-                      ['Aviation', '/categories/aviation'],
-                      ['Government', '/categories/government'],
-                      ['Top Organization', '/categories/top-organization'],
-                      ['Hotel & Resorts', '/categories/hotel-resorts'],
-                      ['Hospital', '/categories/hospital'],
-                      ['Supermarket', '/categories/supermarket'],
-                      ['Private', '/categories/private'],
-                      ['Banking', '/categories/banking'],
-                      ['Restaurant', '/categories/restaurant']
+                      ['Walk-in Interview', '/belowNavBar/walk-in-interview'],
+                      ['Aviation', '/belowNavBar/aviation'],
+                      ['Government', '/belowNavBar/government'],
+                      ['Top Organization', '/belowNavBar/top-organization'],
+                      ['Hotel & Resorts', '/belowNavBar/hotel-resorts'],
+                      ['Hospital', '/belowNavBar/hospital'],
+                      ['Supermarket', '/belowNavBar/supermarket'],
+                      ['Private', '/belowNavBar/private-sector'],  
+                      ['Banking', '/belowNavBar/banking'],
+                      ['Restaurant', '/belowNavBar/restaurant']
                     ].map(([title, url]) => (
                       <Link
                         key={url}
@@ -131,12 +131,11 @@ export default function Header() {
       } z-50`}>
         <div className="grid grid-cols-12">
           <div className="col-start-2 col-end-12">
-            <div className="relative max-w-[1400px] mx-auto"> {/* Added max-width constraint */}
+            <div className="relative max-w-[1400px] mx-auto"> 
               <div className="flex flex-col h-full overflow-y-auto">
-                {/* Mobile Menu Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
                   <Link 
-                    href="/" 
+                    href="/belowNavBar/home-page" 
                     className="text-xl font-semibold text-gray-900 dark:text-white"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -175,7 +174,7 @@ export default function Header() {
                           ['Hotel & Resorts', '/categories/hotel-resorts'],
                           ['Hospital', '/categories/hospital'],
                           ['Supermarket', '/categories/supermarket'],
-                          ['Private', '/categories/private'],
+                          ['Private', '/belowNavBar/private-sector'],  // Updated path in mobile menu
                           ['Banking', '/categories/banking'],
                           ['Restaurant', '/categories/restaurant']
                         ].map(([title, url]) => (
@@ -199,12 +198,12 @@ export default function Header() {
                     </h3>
                     <div className="grid gap-y-3">
                       {[
-                        ['About Us', '/about'],
-                        ['Privacy Policy', '/privacy'],
-                        ['Disclaimer', '/disclaimer'],
-                        ['Job Ad Report', '/report-job'],
-                        ['Terms and Conditions', '/terms'],
-                        ['Contact Us', '/contact']
+                        ['About Us', '/topNavBar/about'],
+                        ['Privacy Policy', '/topNavBar/privacy'],
+                        ['Disclaimer', '/topNavBar/disclaimer'],
+                        ['Job Ad Report', '/topNavBar/job-report'],
+                        ['Terms and Conditions', '/topNavBar/terms'],
+                        ['Contact Us', '/topNavBar/contact']
                       ].map(([title, url]) => (
                         <Link
                           key={url}
